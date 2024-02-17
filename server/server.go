@@ -12,7 +12,7 @@ import (
 type Config struct {
 	Port        string
 	JWTSecret   string
-	DatabaseURL string
+	DatabaseUrl string
 }
 
 type Server interface {
@@ -33,14 +33,14 @@ func NewServer(ctx context.Context, config *Config) (*Broker, error) {
 		return nil, errors.New("port is required")
 	}
 	if config.JWTSecret == "" {
-		return nil, errors.New("secret is required")
+		return nil, errors.New("jwt secret is required")
 	}
-	if config.DatabaseURL == "" {
-		return nil, errors.New("database URL is required")
+	if config.DatabaseUrl == "" {
+		return nil, errors.New("database url is required")
 	}
 	broker := &Broker{
 		config: config,
-		router: &mux.Router{},
+		router: mux.NewRouter(),
 	}
 	return broker, nil
 }
@@ -48,8 +48,10 @@ func NewServer(ctx context.Context, config *Config) (*Broker, error) {
 func (b *Broker) Start(binder func(s Server, r *mux.Router)) {
 	b.router = mux.NewRouter()
 	binder(b, b.router)
-	log.Println("Starting server on port:", b.Config().Port)
+	log.Println("starting server on port", b.config.Port)
 	if err := http.ListenAndServe(b.config.Port, b.router); err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		log.Println("error starting server:", err)
+	} else {
+		log.Fatalf("server stopped")
 	}
 }
