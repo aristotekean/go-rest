@@ -23,7 +23,7 @@ func InsertUser(ctx context.Context, user *models.User) error {
 	return implementation.InsertUser(ctx, user)
 }
 
-func GettUserById(ctx context.Context, id string) (*models.User, error) {
+func GetUserById(ctx context.Context, id string) (*models.User, error) {
 	return implementation.GetUserById(ctx, id)
 }
 
