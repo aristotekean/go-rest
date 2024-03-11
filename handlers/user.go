@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -25,7 +26,7 @@ type SignUpLoginRequest struct {
 
 type SignUpResponse struct {
 	Id    string `json:"id"`
-	Email string `json:"message"`
+	Email string `json:"email"`
 }
 
 type LoginResponse struct {
@@ -113,7 +114,7 @@ func LoginHandler(s server.Server) http.HandlerFunc {
 func MeHandler(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tokenString := strings.TrimSpace(r.Header.Get("Authorization"))
-		token, err := jwt.ParseWithClaims(tokenString, models.AppClaims{}, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(tokenString, &models.AppClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(s.Config().JWTSecret), nil
 		})
 		if err != nil {
@@ -122,6 +123,8 @@ func MeHandler(s server.Server) http.HandlerFunc {
 		}
 		if claims, ok := token.Claims.(*models.AppClaims); ok && token.Valid {
 			user, err := repository.GetUserById(r.Context(), claims.UserId)
+			fmt.Print(user)
+
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
