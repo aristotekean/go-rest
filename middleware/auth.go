@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	NO_AUTH_NEEDED = []string{"/login", "/register"}
+	NO_AUTH_NEEDED = []string{"/login", "/signup"}
 )
 
 func shouldCheckToken(path string) bool {

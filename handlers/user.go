@@ -20,7 +20,7 @@ const (
 )
 
 type SignUpLoginRequest struct {
-	Email    string `json:"message"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
