@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
-
+	_ "github.com/lib/pq"
 	"github.com/aristotekean/go-REST/models"
 )
 
@@ -27,7 +27,7 @@ func (repo *PostgresRepository) InsertUser(ctx context.Context, user *models.Use
 	return err
 }
 
-func (repo *PostgresRepository) GetUserById(ctx context.Context, id uint64) (*models.User, error) {
+func (repo *PostgresRepository) GetUserById(ctx context.Context, id string) (*models.User, error) {
 	rows, err := repo.db.QueryContext(ctx, "SELECT id email FROM users WHERE id = $1", id)
 	defer func() {
 		rows.Close()
