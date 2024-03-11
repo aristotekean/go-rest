@@ -4,8 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	_ "github.com/lib/pq"
+
 	"github.com/aristotekean/go-REST/models"
+	_ "github.com/lib/pq"
 )
 
 //TODO implement UserRepository interface
@@ -23,7 +24,7 @@ func NewPostgresRepository(url string) (*PostgresRepository, error) {
 }
 
 func (repo *PostgresRepository) InsertUser(ctx context.Context, user *models.User) error {
-	_, err := repo.db.QueryContext(ctx, "INSERT INTO users (email, password) VALUES ($1 , $2)", user.Email, user.Password)
+	_, err := repo.db.QueryContext(ctx, "INSERT INTO users (id, email, password) VALUES ($1 , $2, $3)", user.Id, user.Email, user.Password)
 	return err
 }
 
