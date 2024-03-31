@@ -13,4 +13,7 @@ require (
 	golang.org/x/crypto v0.21.0
 )
 
-require golang.org/x/net v0.21.0 // indirect
+require (
+	github.com/rs/cors v1.10.1
+	golang.org/x/net v0.21.0 // indirect
+)
